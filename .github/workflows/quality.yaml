@@ -115,3 +115,6 @@ jobs:
 
       - name: Test agent compilation components
         run: npm run test:install
+
+      - name: Validate marketplace manifest
+        run: npm run validate:marketplace
