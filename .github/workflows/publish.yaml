@@ -150,6 +150,9 @@ jobs:
         run: |
           TAG="v$(node -p 'require("./package.json").version')"
           VERSION="${TAG#v}"
+          has_release_notes() {
+            [[ "$1" =~ [^[:space:]] ]]
+          }
           BODY=$(awk -v ver="$VERSION" '
             /^## / {
               if (found) exit
@@ -158,7 +161,7 @@ jobs:
             }
             found { print }
           ' CHANGELOG.md)
-          if [ -z "$BODY" ]; then
+          if ! has_release_notes "$BODY"; then
             BODY=$(awk '
               /^##[[:space:]]*\[Unreleased\]/ { found=1; next }
               /^## / {
@@ -167,11 +170,11 @@ jobs:
               }
               found { print }
             ' CHANGELOG.md)
-            if [ -n "$BODY" ]; then
+            if has_release_notes "$BODY"; then
               echo "::notice::No CHANGELOG.md entry for $TAG — using [Unreleased] notes"
             fi
           fi
-          if [ -z "$BODY" ]; then
+          if ! has_release_notes "$BODY"; then
             echo "::warning::No CHANGELOG.md entry for $TAG — falling back to auto-generated notes"
             gh release create "$TAG" --generate-notes
           else
