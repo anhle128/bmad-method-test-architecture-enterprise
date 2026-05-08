@@ -62,6 +62,22 @@ BMad does not mandate TEA. There are five valid ways to use it (or skip it). Pic
 
 If you are unsure, default to the integrated path for your track and adjust later.
 
+### Exact Phase 3 Commands
+
+When this page says `test-design`, `framework`, or `ci`, those are TEA workflow names. If the TEA agent menu is already active, you can use the menu codes `TD`, `TF`, and `CI`. Otherwise, use the full command form for your tool:
+
+| Phase 3 Step             | Claude Code / Cursor / Windsurf | Codex                            |
+| ------------------------ | ------------------------------- | -------------------------------- |
+| System-level test design | `/bmad:tea:test-design`         | `$bmad-tea-testarch-test-design` |
+| Test framework setup     | `/bmad:tea:framework`           | `$bmad-tea-testarch-framework`   |
+| CI/CD quality pipeline   | `/bmad:tea:ci`                  | `$bmad-tea-testarch-ci`          |
+
+Example Phase 3 sequence:
+
+1. Run `/bmad:tea:test-design` and ask for **system-level** mode against the PRD, architecture, and ADRs.
+2. Run `/bmad:tea:framework` after the architecture and test design establish the test stack and quality requirements.
+3. Run `/bmad:tea:ci` after the framework exists so TEA can wire the pipeline to real test commands.
+
 ## TEA Command Catalog
 
 | Command       | Primary Outputs                                                                               | Notes                                                | With Browser Automation (CLI/MCP)                                                                                                    |
@@ -171,6 +187,24 @@ graph TB
 
 - **System-level (Phase 3):** Run immediately after architecture/ADR drafting to produce TWO documents: `test-design-architecture.md` (for Architecture/Dev teams: testability gaps, ASRs, NFR requirements) + `test-design-qa.md` (for QA team: test execution recipe, coverage plan, Sprint 0 setup). Feeds the implementation-readiness gate.
 - **Epic-level (Phase 4):** Run per-epic to produce `test-design-epic-N.md` (risk, priorities, coverage plan).
+
+Use the same `test-design` workflow command for both modes; make the scope explicit in your prompt:
+
+**Phase 3 system-level example**
+
+```text
+/bmad:tea:test-design
+Run system-level test-design for Phase 3 using docs/prd.md, docs/architecture.md, and docs/adr/*.md. Focus on architecture testability, ASRs, NFRs, integration risks, and Sprint 0 setup. Produce test-design-architecture.md and test-design-qa.md before implementation-readiness.
+```
+
+**Phase 4 per-epic example**
+
+```text
+/bmad:tea:test-design
+Run epic-level test-design for Phase 4 on Epic 3 using docs/epics/epic-3.md and its stories. Use prior system-level test-design outputs if present. Produce test-design-epic-3.md with risk scores, P0-P3 scenarios, regression/integration coverage, and follow-on guidance for atdd and automate.
+```
+
+Codex users run `$bmad-tea-testarch-test-design` instead of `/bmad:tea:test-design` and use the same scope-setting prompt.
 
 The Quick Flow track skips Phases 1 and 3.
 BMad Method and Enterprise use all phases based on project needs.
