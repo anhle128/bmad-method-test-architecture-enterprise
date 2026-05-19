@@ -5,7 +5,7 @@ description: Use TEA with compliance, security, and regulatory requirements in e
 
 # Running TEA for Enterprise Projects
 
-Use TEA on enterprise projects with compliance, security, audit, and regulatory requirements. This guide covers NFR assessment, audit trails, and evidence collection.
+Use TEA on enterprise projects with compliance, security, audit, and regulatory requirements. This guide covers NFR planning, NFR Evidence Audit, audit trails, and evidence collection.
 
 ## When to Use This
 
@@ -24,11 +24,11 @@ Use TEA on enterprise projects with compliance, security, audit, and regulatory 
 
 ## Enterprise-Specific TEA Workflows
 
-### NFR Assessment (`nfr-assess`)
+### NFR Evidence Audit (`nfr-assess`)
 
-**Purpose:** Validate non-functional requirements with evidence.
+**Purpose:** Audit implemented non-functional requirement evidence against defined thresholds.
 
-**When:** Phase 2 (early) and Release Gate
+**When:** Release Gate, or earlier only when implementation evidence already exists. Use `test-design` in Phase 3 to plan NFR thresholds and evidence.
 
 **Why Enterprise Needs This:**
 
@@ -56,7 +56,7 @@ Evidence:
 - Compliance audit: reports/soc2-evidence.zip
 ```
 
-**Output:** NFR assessment with PASS/CONCERNS/FAIL for each category.
+**Output:** NFR evidence audit with PASS/CONCERNS/FAIL for each category.
 
 ### Trace with Audit Evidence (`trace`)
 
@@ -156,17 +156,18 @@ Include in PRD:
 - Compliance mandates (data retention, audit logs)
 ```
 
-**2. Assess NFRs:**
+**2. Plan NFR evidence with test-design:**
 
 ```
-TEA: nfr-assess
+TEA: test-design
 
-Categories: All (Security, Performance, Reliability, Maintainability)
+Scope: system-level
+Focus: NFR thresholds, planned validation, required evidence
 
-Output: nfr-assessment.md
-- NFR requirements documented
-- Acceptance criteria defined
-- Test strategy planned
+Output: test-design-architecture.md + test-design-qa.md
+- NFR thresholds and unknowns documented
+- Planned evidence sources defined
+- Test strategy and NFR coverage planned
 ```
 
 **3. Baseline (brownfield only):**
@@ -240,12 +241,12 @@ Requirements:
 
 ### Release Gate (Required)
 
-**1. Final NFR assessment:**
+**1. Final NFR Evidence Audit:**
 
 ```
 TEA: nfr-assess
 
-All categories (if not done earlier)
+All categories with available evidence
 Latest evidence (performance tests, security scans)
 ```
 
@@ -266,7 +267,7 @@ TEA: trace Phase 2
 Evidence required:
 - traceability-matrix.md (from Phase 1)
 - test-review.md (from quality audit)
-- nfr-assessment.md (from NFR assessment)
+- nfr-assessment.md (from NFR Evidence Audit)
 - Test execution results (must have test results available)
 
 Decision: PASS/CONCERNS/FAIL/WAIVED
@@ -282,7 +283,7 @@ Archive all artifacts for compliance audit
 Archive:
 - All test results
 - Coverage reports
-- NFR assessments
+- NFR evidence audits
 - Gate decisions
 - Approver signatures
 
@@ -297,7 +298,7 @@ Retention: Per compliance requirements (7 years for HIPAA)
 
 - Requirements traceability matrix
 - Test execution results (with timestamps)
-- NFR assessment reports
+- NFR evidence audit reports
 - Security scan results
 - Performance test results
 - Gate decision records
@@ -539,7 +540,7 @@ testWithAuth('admin can access admin endpoint', async ({ apiRequest, authToken, 
 
 **Workflow Guides:**
 
-- [How to Run NFR Assessment](/docs/how-to/workflows/run-nfr-assess.md) - Deep dive on NFRs
+- [How to Run NFR Evidence Audit](/docs/how-to/workflows/run-nfr-assess.md) - Deep dive on evidence auditing
 - [How to Run Trace](/docs/how-to/workflows/run-trace.md) - Gate decisions with evidence
 - [How to Run Test Review](/docs/how-to/workflows/run-test-review.md) - Quality audits
 - [How to Run Test Design](/docs/how-to/workflows/run-test-design.md) - Compliance-focused planning

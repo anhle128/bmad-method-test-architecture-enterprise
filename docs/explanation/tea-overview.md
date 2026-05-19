@@ -51,14 +51,14 @@ BMad does not mandate TEA. There are five valid ways to use it (or skip it). Pic
    - Phase 2: baseline `trace`.
    - Phase 3: system-level `test-design`, then `framework` and `ci`.
    - Phase 4: per-epic `test-design` focused on regression and integration risks.
-   - Gate (Phase 2): `trace`; `nfr-assess` (if not done earlier).
-   - For brownfield BMad Method, follow the same flow with `nfr-assess` optional.
+   - Gate: optional `nfr-assess` for NFR Evidence Audit, then `trace` Phase 2.
+   - For brownfield BMad Method, run `nfr-assess` only when NFR evidence exists and matters to release.
 
 5. **Integrated: Greenfield - Enterprise Method (Enterprise/Compliance Work)**
-   - Phase 2: `nfr-assess`.
-   - Phase 3: system-level `test-design`, then `framework` and `ci`.
+   - Phase 2: PM defines NFRs in PRD.
+   - Phase 3: system-level `test-design` plans NFR thresholds/evidence, then `framework` and `ci`.
    - Phase 4: per-epic `test-design`, plus `atdd`/`automate`/`test-review`.
-   - Gate (Phase 2): `trace`; archive artifacts as needed.
+   - Gate: `nfr-assess` audits evidence, `trace` Phase 2 makes the gate decision; archive artifacts as needed.
 
 If you are unsure, default to the integrated path for your track and adjust later.
 
@@ -82,13 +82,13 @@ Example Phase 3 sequence:
 
 | Command       | Primary Outputs                                                                               | Notes                                                | With Browser Automation (CLI/MCP)                                                                                                    |
 | ------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `test-design` | Combined risk assessment, NFR planning, mitigation plan, and coverage strategy                | Risk scoring + NFR thresholds/evidence plan          | **+ Exploratory**: Interactive UI discovery with browser automation (uncover actual functionality)                                   |
 | `framework`   | Playwright/Cypress scaffold, `.env.example`, `.nvmrc`, sample specs                           | Use when no production-ready harness exists          | -                                                                                                                                    |
 | `ci`          | CI workflow, selective test scripts, secrets checklist                                        | Platform-aware (GitHub Actions default)              | -                                                                                                                                    |
-| `test-design` | Combined risk assessment, mitigation plan, and coverage strategy                              | Risk scoring + optional exploratory mode             | **+ Exploratory**: Interactive UI discovery with browser automation (uncover actual functionality)                                   |
 | `atdd`        | Red-phase acceptance test scaffolds + implementation checklist                                | TDD red phase + optional recording mode              | **+ Recording**: UI selectors verified with live browser; API tests benefit from trace analysis                                      |
 | `automate`    | Prioritized specs, fixtures, README/script updates, DoD summary                               | Optional healing/recording, avoid duplicate coverage | **+ Healing**: Visual debugging + trace analysis for test fixes; **+ Recording**: Verified selectors (UI) + network inspection (API) |
 | `test-review` | Test quality review report with 0-100 score, violations, fixes                                | Reviews tests against knowledge base patterns        | -                                                                                                                                    |
-| `nfr-assess`  | NFR assessment report with actions                                                            | Focus on security/performance/reliability            | -                                                                                                                                    |
+| `nfr-assess`  | NFR Evidence Audit report with actions                                                        | Audits implemented evidence against thresholds       | -                                                                                                                                    |
 | `trace`       | Phase 1: Coverage matrix, recommendations. Phase 2: Gate decision (PASS/CONCERNS/FAIL/WAIVED) | Two-phase workflow: traceability + gate decision     | -                                                                                                                                    |
 
 ## TEA Workflow Lifecycle
@@ -109,7 +109,7 @@ graph TB
     subgraph Phase2["<b>Phase 2: PLANNING</b>"]
         PM["<b>PM: prd (creates PRD with FRs/NFRs)</b>"]
         PlanNote["<b>Business requirements phase</b>"]
-        NFR2["<b>TEA: nfr-assess (optional, enterprise)</b>"]
+        NFR2["<b>NFRs captured in PRD</b>"]
         PM -.-> NFR2
         NFR2 -.-> PlanNote
         PM -.-> PlanNote
@@ -118,7 +118,7 @@ graph TB
     subgraph Phase3["<b>Phase 3: SOLUTIONING</b>"]
         Architecture["<b>Architect: architecture</b>"]
         EpicsStories["<b>PM/Architect: create-epics-and-stories</b>"]
-        TestDesignSys["<b>TEA: test-design (system-level)</b>"]
+        TestDesignSys["<b>TEA: test-design (system-level + NFR planning)</b>"]
         Framework["<b>TEA: framework (optional if needed)</b>"]
         CI["<b>TEA: ci (optional if needed)</b>"]
         GateCheck["<b>Architect: implementation-readiness</b>"]
@@ -155,7 +155,7 @@ graph TB
     end
 
     subgraph Gate["<b>EPIC/RELEASE GATE</b>"]
-        NFR["<b>TEA: nfr-assess (if not done earlier)</b>"]
+        NFR["<b>TEA: nfr-assess (NFR Evidence Audit)</b>"]
         TestReview2["<b>TEA: test-review (final audit, optional)</b>"]
         TraceGate["<b>TEA: trace - Phase 2: Gate</b>"]
         GateDecision{"<b>Gate Decision</b>"}
@@ -183,10 +183,10 @@ graph TB
     style Waived fill:#9c27b0,stroke:#4a148c,stroke-width:3px,color:#000
 ```
 
-**TEA workflows:** `framework` and `ci` run once in Phase 3 after architecture. `test-design` is **dual-mode**:
+**TEA workflows:** `test-design` runs before `framework` and `ci` so NFR evidence needs can influence infrastructure. `framework` and `ci` run once in Phase 3 after architecture. `test-design` is **dual-mode**:
 
-- **System-level (Phase 3):** Run immediately after architecture/ADR drafting to produce TWO documents: `test-design-architecture.md` (for Architecture/Dev teams: testability gaps, ASRs, NFR requirements) + `test-design-qa.md` (for QA team: test execution recipe, coverage plan, Sprint 0 setup). Feeds the implementation-readiness gate.
-- **Epic-level (Phase 4):** Run per-epic to produce `test-design-epic-N.md` (risk, priorities, coverage plan).
+- **System-level (Phase 3):** Run immediately after architecture/ADR drafting to produce TWO documents: `test-design-architecture.md` (for Architecture/Dev teams: testability gaps, ASRs, NFR requirements, planned evidence) + `test-design-qa.md` (for QA team: test execution recipe, coverage plan, Sprint 0 setup, NFR coverage plan). Feeds the implementation-readiness gate.
+- **Epic-level (Phase 4):** Run per-epic to produce `test-design-epic-N.md` (risk, priorities, coverage plan, and epic-specific NFR planning when relevant).
 
 Use the same `test-design` workflow command for both modes; make the scope explicit in your prompt:
 
@@ -194,14 +194,14 @@ Use the same `test-design` workflow command for both modes; make the scope expli
 
 ```text
 /bmad:tea:test-design
-Run system-level test-design for Phase 3 using docs/prd.md, docs/architecture.md, and docs/adr/*.md. Focus on architecture testability, ASRs, NFRs, integration risks, and Sprint 0 setup. Produce test-design-architecture.md and test-design-qa.md before implementation-readiness.
+Run system-level test-design for Phase 3 using docs/prd.md, docs/architecture.md, and docs/adr/*.md. Focus on architecture testability, ASRs, NFR thresholds, planned NFR evidence, integration risks, and Sprint 0 setup. Produce test-design-architecture.md and test-design-qa.md before implementation-readiness.
 ```
 
 **Phase 4 per-epic example**
 
 ```text
 /bmad:tea:test-design
-Run epic-level test-design for Phase 4 on Epic 3 using docs/epics/epic-3.md and its stories. Use prior system-level test-design outputs if present. Produce test-design-epic-3.md with risk scores, P0-P3 scenarios, regression/integration coverage, and follow-on guidance for atdd and automate.
+Run epic-level test-design for Phase 4 on Epic 3 using docs/epics/epic-3.md and its stories. Use prior system-level test-design outputs if present. Produce test-design-epic-3.md with risk scores, P0-P3 scenarios, regression/integration/NFR coverage, and follow-on guidance for atdd and automate.
 ```
 
 Codex users run `$bmad-tea-testarch-test-design` instead of `/bmad:tea:test-design` and use the same scope-setting prompt.
@@ -214,14 +214,15 @@ When an ADR or architecture draft is produced, run `test-design` in **system-lev
 
 TEA spans multiple phases (Phase 3, Phase 4, and the release gate). Most BMM agents operate in a single phase. That multi-phase role is paired with a dedicated testing knowledge base so standards stay consistent across projects.
 
-### TEA's 8 Workflows Across Phases
+### TEA's 9 Workflows Across Phases
 
-| Phase       | TEA Workflows                                             | Frequency        | Purpose                                                 |
-| ----------- | --------------------------------------------------------- | ---------------- | ------------------------------------------------------- |
-| **Phase 2** | (none)                                                    | -                | Planning phase - PM defines requirements                |
-| **Phase 3** | `test-design` (system-level), `framework`, `ci`           | Once per project | System testability review and test infrastructure setup |
-| **Phase 4** | `test-design`, `atdd`, `automate`, `test-review`, `trace` | Per epic/story   | Test planning per epic, then per-story testing          |
-| **Release** | `nfr-assess`, `trace` (Phase 2: gate)                     | Per epic/release | Go/no-go decision                                       |
+| Phase        | TEA Workflows                                             | Frequency        | Purpose                                                         |
+| ------------ | --------------------------------------------------------- | ---------------- | --------------------------------------------------------------- |
+| **Learning** | `teach-me-testing`                                        | Per learner      | Progressive testing education                                   |
+| **Phase 2**  | (none)                                                    | -                | Planning phase - PM defines FRs/NFRs                            |
+| **Phase 3**  | `test-design` (system-level), `framework`, `ci`           | Once per project | System testability, NFR planning, and test infrastructure setup |
+| **Phase 4**  | `test-design`, `atdd`, `automate`, `test-review`, `trace` | Per epic/story   | Test planning per epic, then per-story testing                  |
+| **Release**  | `nfr-assess` (optional), `trace` (Phase 2: gate)          | Per epic/release | Optional NFR evidence audit; go/no-go gate decision             |
 
 **Note**: `trace` is a two-phase workflow: Phase 1 (traceability) + Phase 2 (gate decision). This reduces cognitive load while maintaining natural workflow.
 
@@ -279,25 +280,25 @@ These cheat sheets map TEA workflows to the **BMad Method and Enterprise tracks*
 - ➕ Documentation (Prerequisite) - Document existing codebase if undocumented
 - ➕ Phase 2: `trace` - Baseline existing test coverage before planning
 - 🔄 Phase 4: `test-design` - Focus on regression hotspots and brownfield risks
-- 🔄 Phase 4: Story Review - May include `nfr-assess` if not done earlier
+- 🔄 Release Gate - May include `nfr-assess` when NFR evidence exists
 
-| Workflow Stage                     | Test Architect                                                            | Dev / Team                                                                       | Outputs                                                                |
-| ---------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| **Documentation**: Prerequisite ➕ | -                                                                         | Analyst `document-project` (if undocumented)                                     | Comprehensive project documentation                                    |
-| **Phase 1**: Discovery             | -                                                                         | Analyst/PM/Architect rerun planning workflows                                    | Updated planning artifacts in `{output_folder}`                        |
-| **Phase 2**: Planning              | Run ➕ `trace` (baseline coverage)                                        | PM `prd` (creates PRD with FRs/NFRs)                                             | PRD with FRs/NFRs, ➕ coverage baseline                                |
-| **Phase 3**: Solutioning           | Run `framework`, `ci` AFTER architecture and epic creation                | Architect `architecture`, `create-epics-and-stories`, `implementation-readiness` | Architecture, epics/stories, test framework, CI pipeline               |
-| **Phase 4**: Sprint Start          | -                                                                         | SM `sprint-planning`                                                             | Sprint status file with all epics and stories                          |
-| **Phase 4**: Epic Planning         | Run `test-design` for THIS epic 🔄 (regression hotspots)                  | Review epic scope and brownfield risks                                           | `test-design-epic-N.md` with brownfield risk assessment and mitigation |
-| **Phase 4**: Story Dev             | (Optional) `atdd` before dev, then `automate` after                       | SM `create-story`, DEV implements                                                | Tests, story implementation                                            |
-| **Phase 4**: Story Review          | Apply `test-review` (optional), re-run `trace`, ➕ `nfr-assess` if needed | Resolve gaps, update docs/tests                                                  | Quality report, refreshed coverage matrix, NFR report                  |
-| **Phase 4**: Release Gate          | (Optional) `test-review` for final audit, Run `trace` (Phase 2)           | Capture sign-offs, share release notes                                           | Quality audit, Gate YAML + release summary                             |
+| Workflow Stage                     | Test Architect                                                      | Dev / Team                                                                       | Outputs                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Documentation**: Prerequisite ➕ | -                                                                   | Analyst `document-project` (if undocumented)                                     | Comprehensive project documentation                                         |
+| **Phase 1**: Discovery             | -                                                                   | Analyst/PM/Architect rerun planning workflows                                    | Updated planning artifacts in `{output_folder}`                             |
+| **Phase 2**: Planning              | Run ➕ `trace` (baseline coverage)                                  | PM `prd` (creates PRD with FRs/NFRs)                                             | PRD with FRs/NFRs, ➕ coverage baseline                                     |
+| **Phase 3**: Solutioning           | Run `test-design`, then `framework` and `ci`                        | Architect `architecture`, `create-epics-and-stories`, `implementation-readiness` | Architecture, epics/stories, NFR evidence plan, test framework, CI pipeline |
+| **Phase 4**: Sprint Start          | -                                                                   | SM `sprint-planning`                                                             | Sprint status file with all epics and stories                               |
+| **Phase 4**: Epic Planning         | Run `test-design` for THIS epic 🔄 (regression hotspots)            | Review epic scope and brownfield risks                                           | `test-design-epic-N.md` with brownfield risk assessment and mitigation      |
+| **Phase 4**: Story Dev             | (Optional) `atdd` before dev, then `automate` after                 | SM `create-story`, DEV implements                                                | Tests, story implementation                                                 |
+| **Phase 4**: Story Review          | Apply `test-review` (optional), re-run `trace`                      | Resolve gaps, update docs/tests                                                  | Quality report, refreshed coverage matrix                                   |
+| **Phase 4**: Release Gate          | Optional `test-review`, optional `nfr-assess`, then `trace` Phase 2 | Capture sign-offs, share release notes                                           | Quality audit, NFR evidence audit, Gate YAML + release summary              |
 
 **Key notes:**
 
 - Start with `trace` in Phase 2 to baseline coverage.
 - Focus `test-design` on regression hotspots and integration risk.
-- Run `nfr-assess` before the gate if it wasn't done earlier.
+- Run `nfr-assess` before the gate when NFR evidence exists and matters to release.
 
 ### Greenfield - Enterprise Method (Enterprise/Compliance Work)
 
@@ -307,24 +308,25 @@ These cheat sheets map TEA workflows to the **BMad Method and Enterprise tracks*
 **🏢 Enterprise Deltas from BMad Method:**
 
 - ➕ Phase 1: `research` - Domain and compliance research (recommended)
-- ➕ Phase 2: `nfr-assess` - Capture NFR requirements early (security/performance/reliability)
+- 🔄 Phase 3: `test-design` - Capture NFR thresholds and planned evidence early (security/performance/reliability)
 - 🔄 Phase 4: `test-design` - Enterprise focus (compliance, security architecture alignment)
+- ➕ Release Gate: `nfr-assess` - Audit NFR evidence before final gate
 - 📦 Release Gate - Archive artifacts and compliance evidence for audits
 
-| Workflow Stage             | Test Architect                                                         | Dev / Team                                                                       | Outputs                                                            |
-| -------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| **Phase 1**: Discovery     | -                                                                      | Analyst ➕ `research`, `product-brief`                                           | Domain research, compliance analysis, product brief                |
-| **Phase 2**: Planning      | Run ➕ `nfr-assess`                                                    | PM `prd` (creates PRD with FRs/NFRs), UX `create-ux-design`                      | Enterprise PRD with FRs/NFRs, UX design, ➕ NFR documentation      |
-| **Phase 3**: Solutioning   | Run `framework`, `ci` AFTER architecture and epic creation             | Architect `architecture`, `create-epics-and-stories`, `implementation-readiness` | Architecture, epics/stories, test framework, CI pipeline           |
-| **Phase 4**: Sprint Start  | -                                                                      | SM `sprint-planning`                                                             | Sprint plan with all epics                                         |
-| **Phase 4**: Epic Planning | Run `test-design` for THIS epic 🔄 (compliance focus)                  | Review epic scope and compliance requirements                                    | `test-design-epic-N.md` with security/performance/compliance focus |
-| **Phase 4**: Story Dev     | (Optional) `atdd`, `automate`, `test-review`, `trace` per story        | SM `create-story`, DEV implements                                                | Tests, fixtures, quality reports, coverage matrices                |
-| **Phase 4**: Release Gate  | Final `test-review` audit, Run `trace` (Phase 2), 📦 archive artifacts | Capture sign-offs, 📦 compliance evidence                                        | Quality audit, updated assessments, gate YAML, 📦 audit trail      |
+| Workflow Stage             | Test Architect                                                           | Dev / Team                                                                       | Outputs                                                                     |
+| -------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| **Phase 1**: Discovery     | -                                                                        | Analyst ➕ `research`, `product-brief`                                           | Domain research, compliance analysis, product brief                         |
+| **Phase 2**: Planning      | -                                                                        | PM `prd` (creates PRD with FRs/NFRs), UX `create-ux-design`                      | Enterprise PRD with FRs/NFRs, UX design                                     |
+| **Phase 3**: Solutioning   | Run `test-design`, then `framework` and `ci`                             | Architect `architecture`, `create-epics-and-stories`, `implementation-readiness` | Architecture, epics/stories, NFR evidence plan, test framework, CI pipeline |
+| **Phase 4**: Sprint Start  | -                                                                        | SM `sprint-planning`                                                             | Sprint plan with all epics                                                  |
+| **Phase 4**: Epic Planning | Run `test-design` for THIS epic 🔄 (compliance focus)                    | Review epic scope and compliance requirements                                    | `test-design-epic-N.md` with security/performance/compliance focus          |
+| **Phase 4**: Story Dev     | (Optional) `atdd`, `automate`, `test-review`, `trace` per story          | SM `create-story`, DEV implements                                                | Tests, fixtures, quality reports, coverage matrices                         |
+| **Phase 4**: Release Gate  | Final `test-review`, `nfr-assess`, `trace` Phase 2, 📦 archive artifacts | Capture sign-offs, 📦 compliance evidence                                        | Quality audit, NFR evidence audit, gate YAML, 📦 audit trail                |
 
 **Key notes:**
 
-- Run `nfr-assess` early in Phase 2.
-- `test-design` emphasizes compliance, security, and performance alignment.
+- Run `test-design` early enough to define NFR thresholds and planned evidence before implementation.
+- Run `nfr-assess` at the release gate after evidence exists.
 - Archive artifacts at the release gate for audits.
 
 **Related how-to guides:**
@@ -335,7 +337,7 @@ These cheat sheets map TEA workflows to the **BMad Method and Enterprise tracks*
 - [How to Run Automate](/docs/how-to/workflows/run-automate.md)
 - [How to Run Test Review](/docs/how-to/workflows/run-test-review.md)
 - [How to Set Up CI Pipeline](/docs/how-to/workflows/setup-ci.md)
-- [How to Run NFR Assessment](/docs/how-to/workflows/run-nfr-assess.md)
+- [How to Run NFR Evidence Audit](/docs/how-to/workflows/run-nfr-assess.md)
 - [How to Run Trace](/docs/how-to/workflows/run-trace.md)
 
 ## Deep Dive Concepts
@@ -457,13 +459,13 @@ Optional MCP integration for design-time broker interaction in contract testing 
 **All 9 TEA workflows with step-by-step instructions:**
 
 1. [How to Learn Testing with TEA Academy](/docs/how-to/workflows/teach-me-testing.md) - Teach Me Testing (TEA Academy)
-2. [How to Set Up a Test Framework with TEA](/docs/how-to/workflows/setup-test-framework.md) - Scaffold Playwright or Cypress
-3. [How to Set Up CI Pipeline with TEA](/docs/how-to/workflows/setup-ci.md) - Configure CI/CD with selective testing
-4. [How to Run Test Design with TEA](/docs/how-to/workflows/run-test-design.md) - Risk-based test planning (system or epic)
+2. [How to Run Test Design with TEA](/docs/how-to/workflows/run-test-design.md) - Risk-based test and NFR planning (system or epic)
+3. [How to Set Up a Test Framework with TEA](/docs/how-to/workflows/setup-test-framework.md) - Scaffold Playwright or Cypress
+4. [How to Set Up CI Pipeline with TEA](/docs/how-to/workflows/setup-ci.md) - Configure CI/CD with selective testing
 5. [How to Run ATDD with TEA](/docs/how-to/workflows/run-atdd.md) - Generate red-phase test scaffolds before implementation
 6. [How to Run Automate with TEA](/docs/how-to/workflows/run-automate.md) - Expand test coverage after implementation
 7. [How to Run Test Review with TEA](/docs/how-to/workflows/run-test-review.md) - Audit test quality (0-100 scoring)
-8. [How to Run NFR Assessment with TEA](/docs/how-to/workflows/run-nfr-assess.md) - Validate non-functional requirements
+8. [How to Run NFR Evidence Audit with TEA](/docs/how-to/workflows/run-nfr-assess.md) - Audit non-functional requirement evidence
 9. [How to Run Trace with TEA](/docs/how-to/workflows/run-trace.md) - Coverage traceability + gate decisions
 
 ### Customization & Integration
@@ -479,7 +481,7 @@ Optional MCP integration for design-time broker interaction in contract testing 
 **Specialized guidance for specific contexts:**
 
 - [Using TEA with Existing Tests (Brownfield)](/docs/how-to/brownfield/use-tea-with-existing-tests.md) - Incremental improvement, regression hotspots, baseline coverage
-- [Running TEA for Enterprise](/docs/how-to/brownfield/use-tea-for-enterprise.md) - Compliance, NFR assessment, audit trails, SOC 2/HIPAA
+- [Running TEA for Enterprise](/docs/how-to/brownfield/use-tea-for-enterprise.md) - Compliance, NFR evidence audit, audit trails, SOC 2/HIPAA
 
 ### Concept Deep Dives (Understanding-Oriented)
 

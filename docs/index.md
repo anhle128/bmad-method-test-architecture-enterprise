@@ -40,17 +40,19 @@ Pick a path:
 
 ## Core Workflows
 
-| Workflow                                                  | Trigger | Purpose                                |
-| --------------------------------------------------------- | ------- | -------------------------------------- |
-| [Teach Me Testing](/how-to/workflows/teach-me-testing)    | TMT     | Learn testing (7 sessions, 1-2 weeks)  |
-| [Framework Setup](/how-to/workflows/setup-test-framework) | TF      | Scaffold test framework                |
-| [CI/CD Integration](/how-to/workflows/setup-ci)           | CI      | Set up quality pipeline                |
-| [Test Design](/how-to/workflows/run-test-design)          | TD      | Risk-based test planning               |
-| [ATDD](/how-to/workflows/run-atdd)                        | AT      | Failing acceptance tests (TDD)         |
-| [Test Automation](/how-to/workflows/run-automate)         | TA      | Expand automation coverage             |
-| [Test Review](/how-to/workflows/run-test-review)          | RV      | Quality audit with scoring             |
-| [Requirements Tracing](/how-to/workflows/run-trace)       | TR      | Coverage mapping + gate decision       |
-| [NFR Assessment](/how-to/workflows/run-nfr-assess)        | NR      | Non-functional requirements evaluation |
+| Workflow                                                  | Trigger | Purpose                               |
+| --------------------------------------------------------- | ------- | ------------------------------------- |
+| [Teach Me Testing](/how-to/workflows/teach-me-testing)    | TMT     | Learn testing (7 sessions, 1-2 weeks) |
+| [Test Design](/how-to/workflows/run-test-design)          | TD      | Risk-based planning + NFR planning    |
+| [Framework Setup](/how-to/workflows/setup-test-framework) | TF      | Scaffold test framework               |
+| [CI/CD Integration](/how-to/workflows/setup-ci)           | CI      | Set up quality pipeline               |
+| [ATDD](/how-to/workflows/run-atdd)                        | AT      | Failing acceptance tests (TDD)        |
+| [Test Automation](/how-to/workflows/run-automate)         | TA      | Expand automation coverage            |
+| [Test Review](/how-to/workflows/run-test-review)          | RV      | Quality audit with scoring            |
+| [NFR Evidence Audit](/how-to/workflows/run-nfr-assess)    | NR      | Non-functional evidence evaluation    |
+| [Requirements Tracing](/how-to/workflows/run-trace)       | TR      | Coverage mapping + gate decision      |
+
+> **Agent menu shortcut:** The TEA agent menu also provides a `GATE` intent (trigger: `GATE` in chat after loading `bmad-tea`). It is a routing helper — not a standalone workflow — that guides you through the release gate sequence: optional test-review → optional nfr-assess → trace Phase 2 gate decision. It produces no artifact of its own.
 
 ## Documentation Structure
 

@@ -18,14 +18,15 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
 ## Quick Index
 
 - [`teach-me-testing`](#teach-me-testing) - Learn testing (TEA Academy)
+- [`test-design`](#test-design) - Risk-based test planning
 - [`framework`](#framework) - Scaffold test framework
 - [`ci`](#ci) - Setup CI/CD pipeline
-- [`test-design`](#test-design) - Risk-based test planning
 - [`atdd`](#atdd) - Acceptance TDD
 - [`automate`](#automate) - Test automation
 - [`test-review`](#test-review) - Quality audit
-- [`nfr-assess`](#nfr-assess) - NFR assessment
+- [`nfr-assess`](#nfr-assess) - NFR Evidence Audit
 - [`trace`](#trace) - Coverage traceability
+- [`GATE`](#gate-agent-menu-shortcut) - Release gate routing helper (agent menu only)
 
 ---
 
@@ -123,7 +124,7 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
 
 ## test-design
 
-**Purpose:** Risk-based test planning with coverage strategy
+**Purpose:** Risk-based test planning with coverage strategy and NFR planning
 
 **Phase:** Phase 3 (system-level), Phase 4 (epic-level)
 
@@ -131,8 +132,8 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
 
 **Modes:**
 
-- **System-level:** Architecture testability review (TWO documents)
-- **Epic-level:** Per-epic risk assessment (ONE document)
+- **System-level:** Architecture testability review and NFR planning (TWO documents)
+- **Epic-level:** Per-epic risk and NFR planning (ONE document)
 
 **Key Inputs:**
 
@@ -147,12 +148,13 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
   - Quick Guide (🚨 BLOCKERS / ⚠️ HIGH PRIORITY / 📋 INFO ONLY)
   - Risk assessment with scoring
   - Testability concerns and gaps
+  - NFR thresholds, unknowns, and planned evidence
   - Mitigation plans
 - `test-design-qa.md` - For QA team
   - Test execution recipe
   - Coverage plan (P0/P1/P2/P3 with checkboxes)
   - Sprint 0 setup requirements
-  - NFR readiness summary
+  - NFR test coverage and evidence plan
 
 **Epic-Level (ONE Document):**
 
@@ -160,6 +162,7 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
   - Risk assessment (probability × impact scores)
   - Test priorities (P0-P3)
   - Coverage strategy
+  - NFR planning when NFRs are in scope
   - Mitigation plans
 
 **Why Two Documents for System-Level?**
@@ -256,16 +259,17 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
 
 ## nfr-assess
 
-**Purpose:** Validate non-functional requirements with evidence
+**Purpose:** Audit implemented NFR evidence against defined thresholds
 
-**Phase:** Phase 2 (enterprise), Release Gate
+**Phase:** Release Gate; optional earlier evidence audit when implementation evidence exists
 
 **Frequency:** Per release (enterprise projects)
 
 **Key Inputs:**
 
 - NFR categories (Security, Performance, Reliability, Maintainability)
-- Thresholds, evidence location
+- Thresholds from PRD, architecture, or `test-design`
+- Evidence locations (test reports, scans, metrics, logs, monitoring, CI results)
 
 **Key Outputs:**
 
@@ -274,7 +278,9 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
 - Mitigation plans
 - Gate decision inputs
 
-**How-To Guide:** [Run NFR Assessment](/docs/how-to/workflows/run-nfr-assess.md)
+**Boundary:** Use `test-design` to plan NFR thresholds and evidence before implementation. Use `nfr-assess` after evidence exists to audit the evidence.
+
+**How-To Guide:** [Run NFR Evidence Audit](/docs/how-to/workflows/run-nfr-assess.md)
 
 ---
 
@@ -311,18 +317,36 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
 
 ---
 
+## GATE (Agent Menu Shortcut)
+
+**Purpose:** Release gate routing helper — not a standalone workflow; produces no artifact of its own.
+
+**Trigger:** Type `GATE` in chat after loading the TEA agent (`bmad-tea`).
+
+**What it does:** Determines which release gate evidence exists and guides you through the correct sequence:
+
+1. (Optional) `test-review` — final test quality audit
+2. (Optional) `nfr-assess` — NFR Evidence Audit
+3. `trace` Phase 2 — PASS/CONCERNS/FAIL/WAIVED gate decision
+
+The agent asks which evidence is available and routes to the right workflow. It does not merge these workflows; each workflow is invoked separately in sequence.
+
+**When to use:** When you are approaching a release and want a single starting point that covers all release gate checks without needing to know which workflow to invoke first.
+
+---
+
 ## Summary Table
 
 | Command            | Phase      | Frequency                 | Primary Output             |
 | ------------------ | ---------- | ------------------------- | -------------------------- |
 | `teach-me-testing` | Learning   | Once per learner          | Progress + notes + cert    |
+| `test-design`      | 3, 4       | System + per epic         | Test design + NFR plan     |
 | `framework`        | 3          | Once                      | Test infrastructure        |
 | `ci`               | 3          | Once                      | CI/CD pipeline             |
-| `test-design`      | 3, 4       | System + per epic         | Test design doc            |
 | `atdd`             | 4          | Per story (optional)      | Failing tests              |
 | `automate`         | 4          | Per story                 | Passing tests              |
 | `test-review`      | 4, Gate    | Per epic/release          | Quality report             |
-| `nfr-assess`       | 2, Gate    | Per release               | NFR assessment             |
+| `nfr-assess`       | Gate       | Per release               | NFR evidence audit         |
 | `trace`            | 2, 4, Gate | Baseline + refresh + gate | Coverage matrix + decision |
 
 ---
@@ -338,7 +362,7 @@ All workflows listed here are current and supported in TEA, including `nfr-asses
 - [Run ATDD](/docs/how-to/workflows/run-atdd.md)
 - [Run Automate](/docs/how-to/workflows/run-automate.md)
 - [Run Test Review](/docs/how-to/workflows/run-test-review.md)
-- [Run NFR Assessment](/docs/how-to/workflows/run-nfr-assess.md)
+- [Run NFR Evidence Audit](/docs/how-to/workflows/run-nfr-assess.md)
 - [Run Trace](/docs/how-to/workflows/run-trace.md)
 
 **Explanation:**

@@ -595,7 +595,7 @@ trace Phase 1 - Refresh coverage
 **6. Release Gate:**
 
 ```
-nfr-assess - Validate NFRs (if enterprise)
+nfr-assess - Audit NFR evidence (if enterprise and evidence exists)
 trace Phase 2 - Gate decision
 ```
 

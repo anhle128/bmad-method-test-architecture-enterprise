@@ -1,17 +1,20 @@
 ---
-title: 'How to Run NFR Assessment with TEA'
-description: Validate non-functional requirements for security, performance, reliability, and maintainability using TEA
+title: 'How to Run NFR Evidence Audit with TEA'
+description: Audit non-functional requirement evidence for security, performance, reliability, and maintainability using TEA
 ---
 
-# How to Run NFR Assessment with TEA
+# How to Run NFR Evidence Audit with TEA
 
-Use TEA's `nfr-assess` workflow to validate non-functional requirements (NFRs) with evidence-based assessment across security, performance, reliability, and maintainability.
+Use TEA's `nfr-assess` workflow to audit non-functional requirement (NFR) evidence across security, performance, reliability, and maintainability. The command remains `nfr-assess` for compatibility; the workflow role is an evidence audit.
+
+Use `test-design` before implementation to define NFR thresholds, planned validation, and expected evidence. Use `nfr-assess` after evidence exists to decide PASS/CONCERNS/FAIL.
 
 ## When to Use This
 
 - Enterprise projects with compliance requirements
 - Projects with strict NFR thresholds
 - Before production release
+- After tests, scans, metrics, logs, monitoring data, or CI reports exist
 - When NFRs are critical to project success
 - Security or performance is mission-critical
 
@@ -26,14 +29,14 @@ Use TEA's `nfr-assess` workflow to validate non-functional requirements (NFRs) w
 
 - BMad Method installed
 - TEA agent available
-- NFRs defined in PRD or requirements doc
-- Evidence preferred but not required (test results, security scans, performance metrics)
+- NFRs defined in PRD, requirements doc, architecture, or `test-design`
+- Evidence sources available or explicitly missing (test results, security scans, performance metrics, logs, dashboards, CI reports)
 
-**Note:** You can run NFR assessment without complete evidence. TEA will mark categories as CONCERNS where evidence is missing and document what's needed.
+**Note:** You can run the audit without complete evidence. TEA will mark categories as CONCERNS where evidence is missing and document what's needed.
 
 ## Steps
 
-### 1. Run the NFR Assessment Workflow
+### 1. Run the NFR Evidence Audit Workflow
 
 Start a fresh chat and run:
 
@@ -41,11 +44,11 @@ Start a fresh chat and run:
 nfr-assess
 ```
 
-This loads TEA and starts the NFR assessment workflow.
+This loads TEA and starts the NFR Evidence Audit workflow.
 
 ### 2. Specify NFR Categories
 
-TEA will ask which NFR categories to assess.
+TEA will ask which NFR categories to audit.
 
 **Available Categories:**
 
@@ -69,11 +72,11 @@ Skip maintainability for now
 
 ### 3. Provide NFR Thresholds
 
-TEA will ask for specific thresholds for each category.
+TEA will use specific thresholds for each category, preferably from PRD, architecture, or `test-design`.
 
 **Critical Principle: Never guess thresholds.**
 
-If you don't know the exact requirement, tell TEA to mark as CONCERNS and request clarification from stakeholders.
+If you don't know the exact requirement, tell TEA to mark it as UNKNOWN/CONCERNS and request clarification from stakeholders.
 
 #### Security Thresholds
 
@@ -159,14 +162,14 @@ Don't have:
 - Mark as CONCERNS and request monitoring setup
 ```
 
-### 5. Review NFR Assessment Report
+### 5. Review NFR Evidence Audit Report
 
-TEA generates a comprehensive assessment report.
+TEA generates a comprehensive evidence audit report.
 
-#### Assessment Report (`nfr-assessment.md`):
+#### Evidence Audit Report (`nfr-assessment.md`):
 
 ````markdown
-# Non-Functional Requirements Assessment
+# NFR Evidence Audit
 
 **Date:** 2026-01-13
 **Epic:** User Profile Management
@@ -411,8 +414,8 @@ Lines        : 85.2% ( 1205/1414 )
    - Validate P99 < 200ms
    - Validate throughput > 1000 rps
 
-3. **Update this assessment** (TEA, 1 hour)
-   - Re-run `*nfr-assess` with new results
+3. **Update this audit** (TEA, 1 hour)
+   - Re-run `*nfr-assess` with new evidence
    - Confirm PASS status
 
 ### Waiver Option (If Business Approves)
@@ -461,13 +464,13 @@ If business decides to deploy with current performance:
 
 - Daily: Check performance dashboards
 - Weekly: Review alert trends
-- Monthly: Re-assess NFRs
+- Monthly: Re-audit NFR evidence
 
 ```
 
 ## What You Get
 
-### NFR Assessment Report
+### NFR Evidence Audit Report
 - Category-by-category analysis (Security, Performance, Reliability, Maintainability)
 - Requirements status (target vs actual)
 - Evidence for each requirement
@@ -482,7 +485,7 @@ If business decides to deploy with current performance:
 ### Mitigation Plans
 - Specific actions to address concerns
 - Owners and deadlines
-- Re-assessment criteria
+- Re-audit criteria
 
 ### Monitoring Plan
 - Post-release monitoring strategy
@@ -491,17 +494,20 @@ If business decides to deploy with current performance:
 
 ## Tips
 
-### Run NFR Assessment Early
+### Plan NFRs Early, Audit Evidence Later
 
 **Phase 2 (Enterprise):**
-Run `nfr-assess` during planning to:
+Define NFR requirements in the PRD so `test-design` can:
 - Identify NFR requirements early
 - Plan for performance testing
 - Budget for security audits
 - Set up monitoring infrastructure
 
+**Phase 3:**
+Run `test-design` to turn NFRs into thresholds, planned validation, and expected evidence.
+
 **Phase 4 or Gate:**
-Re-run before release to validate all requirements met.
+Run `nfr-assess` before release to audit the evidence.
 
 ### Never Guess Thresholds
 
@@ -649,7 +655,7 @@ Don't deploy with CONCERNS without mitigation or waiver.
 ```
 Mark as CONCERNS for categories without evidence
 Document what evidence is needed
-Set up tests/scans before re-assessment
+Set up tests/scans before re-audit
 ```
 
 **Don't block on missing evidence** - document what's needed and proceed.
@@ -675,7 +681,7 @@ Negotiate thresholds with stakeholders:
 
 Use data to negotiate realistic requirements.
 
-### Assessment Takes Too Long
+### Audit Takes Too Long
 
 **Problem:** Gathering evidence for all categories is time-consuming.
 

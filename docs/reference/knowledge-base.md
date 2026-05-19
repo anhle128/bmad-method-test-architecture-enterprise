@@ -377,7 +377,7 @@ Each TEA workflow loads specific fragments:
 - risk-governance.md
 - probability-impact.md
 
-**Purpose:** NFR assessment frameworks and decision rules
+**Purpose:** NFR Evidence Audit frameworks and decision rules
 
 ---
 
@@ -391,7 +391,7 @@ Each TEA workflow loads specific fragments:
 
 **Purpose:** Traceability and gate decision standards
 
-**Note:** Loads nfr-criteria.md if NFR assessment is part of gate decision.
+**Note:** Loads nfr-criteria.md if NFR evidence audit status is part of the gate decision.
 
 ---
 

@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-%3E%3D3.10-blue?logo=python&logoColor=white)](https://www.python.org)
 [![uv](https://img.shields.io/badge/uv-package%20manager-blueviolet?logo=uv)](https://docs.astral.sh/uv/)
 
-TEA (Test Engineering Architect) is a standalone BMAD module that delivers risk-based test strategy, test automation guidance, and release gate decisions. It provides a single expert agent (Murat, Master Test Architect and Quality Advisor) and nine workflows spanning Teach Me Testing (TEA Academy), framework setup, test design, ATDD, automation, traceability, NFR assessment, CI guidance, and test review.
+TEA (Test Engineering Architect) is a standalone BMAD module that delivers risk-based test strategy, test automation guidance, and release gate decisions. It provides a single expert agent (Murat, Master Test Architect and Quality Advisor) and nine workflows spanning Teach Me Testing (TEA Academy), test design, framework setup, CI guidance, ATDD, automation, test review, NFR Evidence Audit, and traceability.
 
 Docs: <https://bmad-code-org.github.io/bmad-method-test-architecture-enterprise/>
 
@@ -123,7 +123,7 @@ npx bmad-method install
 1. Install TEA (above)
 2. Load the TEA menu with `$bmad-tea` if you want a conversational entrypoint.
 3. Run one of the core workflows:
-   - `TD` / `/bmad:tea:test-design` / `$bmad-tea-testarch-test-design` — test design and risk assessment
+   - `TD` / `/bmad:tea:test-design` / `$bmad-tea-testarch-test-design` — test design, risk assessment, and NFR planning
    - `AT` / `/bmad:tea:atdd` / `$bmad-tea-testarch-atdd` — failing acceptance tests first (TDD red phase)
    - `TA` / `/bmad:tea:automate` / `$bmad-tea-testarch-automate` — expand automation coverage
 4. Or use in party mode: `/party` to include TEA with other agents
@@ -140,14 +140,14 @@ npx bmad-method install
 | Trigger | Slash Command                | Codex Skill                      | Purpose                                                   |
 | ------- | ---------------------------- | -------------------------------- | --------------------------------------------------------- |
 | TMT     | `/bmad:tea:teach-me-testing` | `$bmad-tea-teach-me-testing`     | Teach Me Testing (TEA Academy)                            |
+| TD      | `/bmad:tea:test-design`      | `$bmad-tea-testarch-test-design` | System-level or epic-level test design and NFR planning   |
 | TF      | `/bmad:tea:framework`        | `$bmad-tea-testarch-framework`   | Scaffold test framework (frontend, backend, or fullstack) |
 | CI      | `/bmad:tea:ci`               | `$bmad-tea-testarch-ci`          | Set up CI/CD quality pipeline (multi-platform)            |
-| TD      | `/bmad:tea:test-design`      | `$bmad-tea-testarch-test-design` | System-level or epic-level test design                    |
 | AT      | `/bmad:tea:atdd`             | `$bmad-tea-testarch-atdd`        | Generate failing acceptance tests + checklist             |
 | TA      | `/bmad:tea:automate`         | `$bmad-tea-testarch-automate`    | Expand test automation coverage                           |
 | RV      | `/bmad:tea:test-review`      | `$bmad-tea-testarch-test-review` | Review test quality and score                             |
+| NR      | `/bmad:tea:nfr-assess`       | `$bmad-tea-testarch-nfr`         | Audit implemented NFR evidence                            |
 | TR      | `/bmad:tea:trace`            | `$bmad-tea-testarch-trace`       | Trace requirements to tests + gate decision               |
-| NR      | `/bmad:tea:nfr-assess`       | `$bmad-tea-testarch-nfr`         | Assess non-functional requirements                        |
 
 ## Configuration
 

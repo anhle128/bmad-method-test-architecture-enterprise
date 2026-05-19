@@ -444,7 +444,7 @@ test-review.md (from test-review)
 
 ```
 
-**NFR Assessment (Optional):**
+**NFR Evidence Audit (Optional):**
 ```
 
 nfr-assessment.md (from nfr-assess)
@@ -476,7 +476,7 @@ TEA makes evidence-based gate decision and writes to separate file.
 - P1 coverage: 100% (6/6 requirements)
 - P2 coverage: 33% (1/3 requirements) - acceptable
 - Test quality score: 84/100
-- NFR assessment: PASS
+- NFR evidence audit: PASS
 
 ## Coverage Analysis
 
@@ -949,7 +949,7 @@ Result: PARTIAL coverage (3/4 criteria)
 
 - [How to Run Test Design](/docs/how-to/workflows/run-test-design.md) - Provides requirements for traceability
 - [How to Run Test Review](/docs/how-to/workflows/run-test-review.md) - Quality scores feed gate
-- [How to Run NFR Assessment](/docs/how-to/workflows/run-nfr-assess.md) - NFR status feeds gate
+- [How to Run NFR Evidence Audit](/docs/how-to/workflows/run-nfr-assess.md) - NFR status feeds gate
 
 ## Understanding the Concepts
 

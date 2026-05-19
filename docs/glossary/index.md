@@ -63,7 +63,7 @@ Terminology reference for Test Architect (TEA).
 | **Party Mode**       | Multi-agent collaboration feature where agents discuss challenges together. BMad Master orchestrates, selecting 2-3 relevant agents per message. |
 | **PM**               | Product Manager agent creating PRDs and tech-specs. Primary agent for Phase 2 planning.                                                          |
 | **SM**               | Scrum Master agent managing sprints, creating stories, and coordinating implementation. Primary orchestrator for Phase 4.                        |
-| **TEA**              | Test Architect agent responsible for test strategy, quality gates, and NFR assessment. Integrates throughout all phases.                         |
+| **TEA**              | Test Architect agent responsible for test strategy, quality gates, NFR planning, and NFR evidence audit. Integrates throughout all phases.       |
 | **Technical Writer** | Agent specialized in creating technical documentation, diagrams, and maintaining documentation standards.                                        |
 | **UX Designer**      | Agent creating UX design documents, interaction patterns, and visual specifications for UI-heavy projects.                                       |
 
@@ -136,7 +136,7 @@ Terminology reference for Test Architect (TEA).
 | **Knowledge Fragment**       | Individual markdown file in TEA's knowledge base covering a specific testing pattern or practice (42 fragments total).                                                                                                       |
 | **Browser Automation**       | Playwright CLI and/or MCP servers enabling live browser interaction during test generation. CLI provides token-efficient stateless commands; MCP provides rich stateful automation. Configured via `tea_browser_automation`. |
 | **Network-First Pattern**    | Testing pattern that waits for actual network responses instead of fixed timeouts to avoid race conditions and flakiness.                                                                                                    |
-| **NFR Assessment**           | Validation of non-functional requirements (security, performance, reliability, maintainability) with evidence-based decisions.                                                                                               |
+| **NFR Evidence Audit**       | Validation of non-functional requirement evidence (security, performance, reliability, maintainability) against defined thresholds.                                                                                          |
 | **Playwright Utils**         | Optional package (`@seontechnologies/playwright-utils`) providing production-ready fixtures and utilities for Playwright tests.                                                                                              |
 | **Risk-Based Testing**       | Testing approach where depth scales with business impact using probability × impact scoring (1-9 scale).                                                                                                                     |
 | **System-Level Test Design** | Test planning at architecture level (Phase 3) focusing on testability review, ADR mapping, and test infrastructure needs.                                                                                                    |

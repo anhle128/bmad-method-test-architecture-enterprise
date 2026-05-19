@@ -205,12 +205,11 @@ Steps:
 **Phase 2: Planning**
 
 - PM creates PRD with NFRs
-- (Optional) TEA runs `nfr-assess` (Enterprise only)
 
 **Phase 3: Solutioning**
 
 - Architect creates architecture
-- TEA runs `test-design` (system-level) → testability review
+- TEA runs `test-design` (system-level) → testability review and NFR evidence plan
 - TEA runs `framework` → test infrastructure
 - TEA runs `ci` → CI/CD pipeline
 - Architect runs `implementation-readiness` (fed by test design)
@@ -229,7 +228,7 @@ Steps:
 **Release Gate:**
 
 - (Optional) TEA runs `test-review` → final audit
-- (Optional) TEA runs `nfr-assess` → validate NFRs
+- (Optional) TEA runs `nfr-assess` → audit NFR evidence
 - TEA runs `trace` Phase 2 → gate decision (PASS/CONCERNS/FAIL/WAIVED)
 
 **What You Get:**
@@ -396,7 +395,7 @@ flowchart TD
 | -------------------------- | --------------------------- | ----------------------------- |
 | **None**                   | Any model                   | Choose based on project needs |
 | **Light** (internal audit) | TEA Solo or Integrated      | Gate decisions helpful        |
-| **Heavy** (SOC 2, HIPAA)   | TEA Integrated (Enterprise) | NFR assessment mandatory      |
+| **Heavy** (SOC 2, HIPAA)   | TEA Integrated (Enterprise) | NFR evidence audit mandatory  |
 
 ## Switching Between Models
 
@@ -444,17 +443,17 @@ Result: TEA where it adds value, skip where it doesn't
 
 ## Comparison Table
 
-| Aspect                | No TEA  | TEA Lite  | TEA Solo   | Integrated (Green) | Integrated (Brown) |
-| --------------------- | ------- | --------- | ---------- | ------------------ | ------------------ |
-| **BMad Required**     | No      | No        | No         | Yes                | Yes                |
-| **Learning Curve**    | None    | Low       | Medium     | High               | High               |
-| **Setup Time**        | 0       | 30 min    | 2 hours    | 1 day              | 2 days             |
-| **Workflows Used**    | 0       | 2-3       | 4-6        | 8                  | 8                  |
-| **Test Planning**     | Manual  | Optional  | Yes        | Systematic         | + Regression focus |
-| **Quality Gates**     | No      | No        | Optional   | Yes                | Yes + baseline     |
-| **NFR Assessment**    | No      | No        | No         | Optional           | Recommended        |
-| **Coverage Tracking** | Manual  | No        | Optional   | Yes                | Yes + trending     |
-| **Best For**          | Experts | Beginners | Standalone | New projects       | Legacy code        |
+| Aspect                 | No TEA  | TEA Lite  | TEA Solo   | Integrated (Green) | Integrated (Brown) |
+| ---------------------- | ------- | --------- | ---------- | ------------------ | ------------------ |
+| **BMad Required**      | No      | No        | No         | Yes                | Yes                |
+| **Learning Curve**     | None    | Low       | Medium     | High               | High               |
+| **Setup Time**         | 0       | 30 min    | 2 hours    | 1 day              | 2 days             |
+| **Workflows Used**     | 0       | 2-3       | 4-6        | 8                  | 8                  |
+| **Test Planning**      | Manual  | Optional  | Yes        | Systematic         | + Regression focus |
+| **Quality Gates**      | No      | No        | Optional   | Yes                | Yes + baseline     |
+| **NFR Evidence Audit** | No      | No        | Optional   | Optional           | Recommended        |
+| **Coverage Tracking**  | Manual  | No        | Optional   | Yes                | Yes + trending     |
+| **Best For**           | Experts | Beginners | Standalone | New projects       | Legacy code        |
 
 ## Real-World Examples
 
@@ -496,7 +495,7 @@ Decision: Full BMad Method + TEA Integrated
 Result:
 - Full lifecycle integration
 - Quality gates before releases
-- NFR assessment for enterprise customers
+- NFR evidence audit for enterprise customers
 ```
 
 ### Example 2: Enterprise (TEA Integrated - Brownfield)

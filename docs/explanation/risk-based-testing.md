@@ -611,7 +611,7 @@ flowchart TD
 
 - [How to Run Test Design](/docs/how-to/workflows/run-test-design.md) - Apply risk scoring
 - [How to Run Trace](/docs/how-to/workflows/run-trace.md) - Gate decisions based on risk
-- [How to Run NFR Assessment](/docs/how-to/workflows/run-nfr-assess.md) - NFR risk assessment
+- [How to Run NFR Evidence Audit](/docs/how-to/workflows/run-nfr-assess.md) - NFR evidence status for gate decisions
 
 **Use-Case Guides:**
 

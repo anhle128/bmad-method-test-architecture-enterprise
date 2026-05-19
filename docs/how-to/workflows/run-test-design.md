@@ -3,7 +3,7 @@ title: 'How to Run Test Design with TEA'
 description: How to create comprehensive test plans using TEA's test-design workflow
 ---
 
-Use TEA's `test-design` workflow to create comprehensive test plans with risk assessment and coverage strategies.
+Use TEA's `test-design` workflow to create comprehensive test plans with risk assessment, NFR planning, and coverage strategies.
 
 ## When to Use This
 
@@ -12,12 +12,14 @@ Use TEA's `test-design` workflow to create comprehensive test plans with risk as
 - After architecture is complete
 - Before implementation-readiness gate
 - To validate architecture testability
+- To define NFR thresholds, unknowns, and planned evidence before implementation
 
 **Epic-level (Phase 4):**
 
 - At the start of each epic
 - Before implementing stories in the epic
 - To identify epic-specific testing needs
+- To refine NFR validation when the epic has security, performance, reliability, scalability, compliance, or maintainability requirements
 
 :::note[Prerequisites]
 
@@ -43,8 +45,8 @@ test-design
 
 TEA will ask if you want:
 
-- **System-level** — For architecture testability review (Phase 3)
-- **Epic-level** — For epic-specific test planning (Phase 4)
+- **System-level** — For architecture testability review and NFR planning (Phase 3)
+- **Epic-level** — For epic-specific test and NFR planning (Phase 4)
 
 ### 4. Provide Context
 
@@ -52,11 +54,13 @@ For system-level:
 
 - Point to your architecture document
 - Reference any ADRs (Architecture Decision Records)
+- Include PRD NFRs, SLO/SLA targets, compliance requirements, and known monitoring needs
 
 For epic-level:
 
 - Specify which epic you're planning
 - Reference the epic file with stories
+- Mention any NFR-heavy scenarios or inherited system-level NFR plans
 
 ### 5. Review the Output
 
@@ -72,20 +76,18 @@ TEA produces two focused documents for system-level mode:
    - Purpose: Architectural concerns, testability gaps, NFR requirements
    - Quick Guide with 🚨 BLOCKERS / ⚠️ HIGH PRIORITY / 📋 INFO ONLY
    - Risk assessment (high/medium/low-priority with scoring)
+   - NFR testability requirements: thresholds, unknowns, architecture gaps, planned evidence
    - Testability concerns and architectural gaps
    - Risk mitigation plans for high-priority risks (≥6)
    - Assumptions and dependencies
 
 2. **`test-design-qa.md`** (for QA team)
    - Purpose: Test execution recipe, coverage plan, Sprint 0 setup
-   - Quick Reference for QA (Before You Start, Execution Order, Need Help)
-   - System architecture summary
-   - Test environment requirements (moved up - early in doc)
-   - Testability assessment (prerequisites checklist)
-   - Test levels strategy (unit/integration/E2E split)
    - Test coverage plan (P0/P1/P2/P3 with detailed scenarios + checkboxes)
+   - NFR test coverage plan with planned validation tools and evidence artifacts
    - Sprint 0 setup requirements (blockers, infrastructure, environments)
-   - NFR readiness summary
+
+`test-design` does **not** make final NFR PASS/CONCERNS/FAIL decisions. It defines the thresholds and evidence that `nfr-assess` audits later.
 
 **Why Two Documents?**
 
@@ -101,17 +103,18 @@ TEA produces two focused documents for system-level mode:
 - Risk assessment for the epic
 - Test priorities (P0-P3)
 - Coverage plan
+- NFR planning when NFRs are in scope
 - Regression hotspots (for brownfield)
 - Integration risks
 - Mitigation strategies
 
 ## Test Design for Different Tracks
 
-| Track          | Phase 3 Focus                         | Phase 4 Focus                          |
-| -------------- | ------------------------------------- | -------------------------------------- |
-| **Greenfield** | System-level testability review       | Per-epic risk assessment and test plan |
-| **Brownfield** | System-level + existing test baseline | Regression hotspots, integration risks |
-| **Enterprise** | Compliance-aware testability          | Security/performance/compliance focus  |
+| Track          | Phase 3 Focus                                    | Phase 4 Focus                              |
+| -------------- | ------------------------------------------------ | ------------------------------------------ |
+| **Greenfield** | System-level testability + NFR planning          | Per-epic risk assessment and test plan     |
+| **Brownfield** | System-level + existing test baseline            | Regression hotspots, integration/NFR risks |
+| **Enterprise** | Compliance-aware testability + NFR evidence plan | Security/performance/compliance focus      |
 
 ## Examples
 
@@ -129,9 +132,11 @@ TEA produces two focused documents for system-level mode:
 ## Tips
 
 - **Run system-level right after architecture** — Early testability review
+- **Shift NFRs left** — Define thresholds and planned evidence before implementation
 - **Run epic-level at the start of each epic** — Targeted test planning
 - **Update if ADRs change** — Keep test design aligned
 - **Use output to guide other workflows** — Feeds into `atdd` and `automate`
+- **Use `nfr-assess` later** — Audit evidence after tests, scans, metrics, or logs exist
 - **Architecture teams review Architecture doc** — Focus on blockers and mitigation plans
 - **QA teams use QA doc as implementation guide** — Follow test scenarios and Sprint 0 checklist
 
@@ -142,3 +147,4 @@ After test design:
 1. **Setup Test Framework** — If not already configured
 2. **Implementation Readiness** — System-level feeds into gate check
 3. **Story Implementation** — Epic-level guides testing during dev
+4. **NFR Evidence Audit** — Run `nfr-assess` after implementation evidence exists
