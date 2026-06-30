@@ -1,0 +1,14 @@
+# Archon repository configuration
+# See: https://github.com/coleam00/Archon
+
+# AI assistant preference (optional - overrides global default)
+# assistant: claude
+
+# Worktree configuration
+worktree:
+  baseBranch: main
+
+# Commands configuration (optional)
+commands:
+  folder: .archon/commands
+  autoLoad: true
