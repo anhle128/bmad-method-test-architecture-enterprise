@@ -4,6 +4,10 @@
 # AI assistant preference (optional - overrides global default)
 # assistant: claude
 
+# Worktree configuration
+worktree:
+  baseBranch: main
+
 # Commands configuration (optional)
 commands:
   folder: .archon/commands
